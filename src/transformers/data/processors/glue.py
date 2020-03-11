@@ -77,7 +77,8 @@ def glue_convert_examples_to_features(
             logger.info("Using output mode %s for task %s" % (output_mode, task))
 
     label_map = {label: i for i, label in enumerate(label_list)}
-
+    #print("task is: ", task)
+    #label_map = {"True":1, "False":0 }
     features = []
     for (ex_index, example) in enumerate(examples):
         len_examples = 0
@@ -117,7 +118,14 @@ def glue_convert_examples_to_features(
         )
 
         if output_mode == "classification":
-            label = label_map[example.label]
+            
+           # print("label_map is: ", label_map)
+           # print("label_list is: ", label_list)
+            if example.label is Flase:
+                label = label_map["0"]
+            else:
+                label =	label_map["1"]
+         
         elif output_mode == "regression":
             label = float(example.label)
         else:
@@ -547,13 +555,13 @@ class BoolqProcessor(DataProcessor):
         examples = []
         # read the jsonline file as dictionary
         # get question, passage, and label
-        with jsonlines.open('BoolQ/val.jsonl') as reader:
+        with jsonlines.open('/scratch/wx455/nlu/data/boolq/val.jsonl') as reader:
             for obj in reader:
                 question = obj["question"]
                 passage = obj["passage"]
                 label = obj["label"]
                 guid = "%s-%s" % (set_type, obj["idx"])
-                examples.append(InputExample(guid=guid, question=text_a, passage=text_b, label=label))
+                examples.append(InputExample(guid=guid, text_a=question, text_b=passage, label=label))
         return examples
 
 
