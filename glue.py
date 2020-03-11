@@ -118,13 +118,17 @@ def glue_convert_examples_to_features(
         )
 
         if output_mode == "classification":
-            label = label_map[example.label]
+            
            # print("label_map is: ", label_map)
            # print("label_list is: ", label_list)
+           label = label_map[example.label]
             # if example.label is False:
             #     label = label_map["0"]
-            # else:
+            # elif example.label is True:
             #     label =	label_map["1"]
+            # else:
+            #     label = label_map[example.label]
+
          
         elif output_mode == "regression":
             label = float(example.label)
